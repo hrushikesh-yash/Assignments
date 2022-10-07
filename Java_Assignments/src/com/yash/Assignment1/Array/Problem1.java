@@ -1,6 +1,7 @@
 package com.yash.Assignment1.Array;
 import java.util.Scanner;
 
+
 /*WAP to find third minimum number from list of numbers.*/
 
 public class Problem1 {
@@ -13,22 +14,38 @@ public class Problem1 {
         	System.out.println("Enter the element of the array : "+(i+1));
         	array[i]=in.nextInt();
 		}
-		thirdSmallestElement(array);
+
+        for (int i = 0; i < array.length; i++) {
+        	System.out.println(array[i]);
+		}
+        
+		thirdSmallestElement(array,sizeOfArray);
 
 	}
 	
-	public static void thirdSmallestElement(int [] arrA){
-
-        if(arrA.length<3){
-            System.out.println("Invalid Input, array size is less than 3");
-        }
+	public static void thirdSmallestElement(int [] arr,int sizeOfArray){
+		
+		for (int i = 0; i < sizeOfArray; i++) {
+			for (int j = i + 1; j < sizeOfArray; j++) {
+				if (arr[i] == arr[j]) {
+//					System.out.println("Duplicates Elements Are :" + arr[i]);
+					arr[j] = arr[sizeOfArray - 1];
+					sizeOfArray--;
+				}
+			}
+		}
+		System.out.println("New Array Without Repeatations");
+		for (int i = 0; i < sizeOfArray; i++) {
+			System.out.println(arr[i]);
+		}
+		
 
         int first=Integer.MAX_VALUE;
         int second=Integer.MAX_VALUE;
         int third = Integer.MAX_VALUE;
 
-        for (int i = 0; i <arrA.length ; i++) {
-            int current = arrA[i];
+        for (int i = 0; i <sizeOfArray ; i++) {
+            int current = arr[i];
             if(first>current){
                 third = second;
                 second = first;
@@ -42,6 +59,8 @@ public class Problem1 {
         }
         System.out.println("Third smallest element is: " + third);
     }
+	
+	
 
 	
 
