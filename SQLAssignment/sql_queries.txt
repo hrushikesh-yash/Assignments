@@ -1,0 +1,106 @@
+
+SQL Queries
+******************************************************************************************************************
+ 
+1. Print those customer who have not buy any product
+
+select cname from customer where customerid not in (select customerid from orders)
+
+******************************************************************************************************************
+2. Print category with highest item price
+
+SELECT p.itemname AS "Product Name", 
+       p.price AS "Price", 
+       c.category AS Category
+   FROM product p, category c
+   WHERE p.categoryid = c.categoryid 
+     AND p.price =
+     (
+       SELECT MAX(p.price)
+         FROM product p
+         WHERE p.categoryid = c.categoryid
+     );
+******************************************************************************************************************
+
+3. Print category with lowest item price
+
+SELECT p.itemname AS "Product Name", 
+       p.price AS "Price", 
+       c.category AS Category
+   FROM product p, category c
+   WHERE p.categoryid = c.categoryid 
+     AND p.price =
+     (
+       SELECT MIN(p.price)
+         FROM product p
+         WHERE p.categoryid = c.categoryid
+     );
+
+*****************************************************************************************************************
+
+4. Print company name along with total category and totalitem in the category
+
+select p.catid,count(bi.billitemid),c.compname
+ from product as p inner join billitem as bi 
+ on p.pid=bi.prodid inner join Company as c 
+ on c.compid=p.compid group by p.catid; 
+*****************************************************************************************************************
+
+5. print customer datewise total item purchased
+
+select c.custname,b.billno,b.date 
+from customer as c inner join bill as b 
+on c.custid=b.custid order by b.date; 
+
+*****************************************************************************************************************
+6. 
+select c.custname,sum(price) 
+from billitem as bi inner join bill as b on bi.billno=b.billno 
+inner join customer as c on c.custid=b.custid group by b.custid; 
+
+*****************************************************************************************************************
+
+7.
+select c.compname,count(bi.billitemid) 
+from product as p inner join billitem as bi 
+on p.pid=bi.prodid inner join company as c
+ on c.compid=p.compid group by p.compid; 
+*****************************************************************************************************************
+8.
+
+select com.compname,c.catname,count(p.pid) 
+  from product as p inner join category as c on p.catid=c.catid 
+  inner join company as com on com.compid=p.compid group by p.catid;
+
+*****************************************************************************************************************
+10. Print how many item is sold daywise 
+
+select p.pname,bill.billno,bill.date 
+from bill join product p on bill.productid=p.pid 
+where bill.date>='2022-08-6'  
+*****************************************************************************************************************
+11. print products which are expire in 15 days
+
+select *from product where expdate >= date(now())
+and
+expdate <= date_add(date(now()),interval 15 day)
+
+*****************************************************************************************************************
+ 12. 
+
+SELECT c.custid,b.billno,count(bi.prodid) as 
+Total buy product count
+from customer c inner join bill b
+inner join product p
+inner join billitem bi
+on c.custid = b.billno
+and b.billno = bi.billno
+and bi.prodid = p.pid;
+
+*****************************************************************************************************************
+13. 
+
+select b.date,sum(bi.price)
+from bill as b inner join billitem as bi 
+on b.billno= bi.billno group by b.date;
+
